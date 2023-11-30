@@ -1,0 +1,1 @@
+statsmodels @ git+https://github.com/statsmodels/statsmodels@27b28335f5921accbbda5f8ea6f0bc1768db282a
