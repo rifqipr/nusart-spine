@@ -1,3 +1,4 @@
+from fastapi.responses import JSONResponse
 from jose import jwt
 from decouple import config
 import time
@@ -6,9 +7,8 @@ JWT_SECRET = config("SECRET_KEY")
 JWT_ALGORITHM = config("ALGORITHM")
 
 def token_response(token : str):
-    return {
-        "access token" : token
-    }
+    response = {"access token" : token}
+    return JSONResponse(content=response, status_code=200)
 
 def signJWT(userID : str):
     payload = {
