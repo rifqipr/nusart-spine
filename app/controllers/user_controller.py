@@ -6,6 +6,8 @@ from app.services.jwt_handler import signJWT
 from app.services.database import get_db
 from sqlalchemy.orm import Session
 
+import bcrypt
+
 router = APIRouter()
 
 # Get all users
@@ -14,12 +16,13 @@ async def get_users(skip : int = 0, limit = 100, db : Session = Depends(get_db))
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
 
-@router.get("/users/{user_id}", response_model=List[UserSchema], tags=["user"])
-async def get_users(email : str, db : Session = Depends(get_db)):
+# Get user by id
+@router.get("/users/{id}", response_model=List[UserSchema], tags=["user"])
+async def get_user(email : str, db : Session = Depends(get_db)):
     user = crud.get_user_by_email(db, email=email)
     if user:
         return user
-    raise HTTPException(status_code=404, detail=f"Email {email} is not registered")
+    raise HTTPException(status_code=404, detail="User does not exist")
 
 # Register
 @router.post("/users", tags=["user"])
@@ -34,7 +37,9 @@ async def create_user(newUser : UserCreate, db : Session = Depends(get_db)):
 async def user_login(user : UserCreate, db : Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, user.email)
 
-    if db_user and user.password == db_user.password:
-        return signJWT(user.email)
+    if db_user:
+        if bcrypt.checkpw(user.password.encode("utf-8"), db_user.password.encode('utf-8')):
+            return signJWT(user.email)
+        raise HTTPException(status_code=401, detail="Password does not match")
     else:
-        raise HTTPException(status_code=401, detail="Invalid Login")
+        raise HTTPException(status_code=401, detail="Email does not exist")

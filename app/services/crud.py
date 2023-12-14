@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
-
 from app.models.user import UserCreate, User
 from app.models.art import Art
 
+import bcrypt
 
 # user table
 def get_users(db: Session, skip: int = 0, limit: int = 100):
@@ -15,7 +15,8 @@ def get_user_by_email(db: Session, email: str):
     return db.query(User).filter(User.email == email).first()
 
 def create_user(db: Session, user: UserCreate):
-    db_user = User(email=user.email, password=user.password)
+    hashed_password = bcrypt.hashpw(user.password.encode("utf-8"), bcrypt.gensalt())
+    db_user = User(email=user.email, password=hashed_password.decode("utf-8"))
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

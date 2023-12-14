@@ -21,6 +21,11 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password   : str
 
+class UserUpdate(UserBase):
+    fullname    : Optional[str] = None
+    phone       : Optional[str] = None
+    domicile    : Optional[str] = None
+
 class UserSchema(UserBase):
     id          : str
     fullname    : Optional[str] = None
