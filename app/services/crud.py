@@ -29,8 +29,8 @@ def get_arts(db: Session, skip: int = 0, limit: int = 100):
 def get_art(db: Session, art_id: str):
     return db.query(Art).filter(Art.id == art_id).first()
 
-def get_art_by_title(db: Session, title: str):
-    return db.query(Art).filter(Art.title == title).first()
+def get_art_by_image(db: Session, image: str):
+    return db.query(Art).filter(Art.image == image).first()
 
 def create_art(db: Session, art: Art):
     db_art = Art(image=art.image, title=art.title, artist=art.artist, genre=art.genre, era=art.era, description=art.description)

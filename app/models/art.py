@@ -15,11 +15,18 @@ class Art(Base):
     era         = Column(String, index=True)
     description = Column(String, index=True)
 
-class ArtSchema(BaseModel):
-    id          : str
-    image       : str
+class ArtBase(BaseModel):
     title       : str
     artist      : str
+    image       : str
+
+class CreateArt(ArtBase):
+    genre       : str
+    era         : str
+    description : str
+
+class ArtSchema(ArtBase):
+    id          : str
     genre       : str
     era         : str
     description : str
