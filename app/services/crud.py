@@ -1,12 +1,15 @@
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
+from sqlalchemy.orm import Session, defer
 from app.models.user import UserCreate, User
 from app.models.art import Art
 
 import bcrypt
 
+router = APIRouter()
+
 # user table
 def get_users(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(User).offset(skip).limit(limit).all()
+    return db.query(User).options(defer(User.password)).offset(skip).limit(limit).all()
 
 def get_user(db: Session, user_id: str):
     return db.query(User).filter(User.id == user_id).first()

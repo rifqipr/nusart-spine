@@ -7,13 +7,19 @@ JWT_SECRET = config("SECRET_KEY")
 JWT_ALGORITHM = config("ALGORITHM")
 
 def token_response(token : str):
-    response = {"access token" : token}
+    response = {
+        "error" : False,
+        "error_message" : "",
+        "data" : {
+            "access_token" : token
+            }
+    }
     return JSONResponse(content=response, status_code=200)
 
 def signJWT(userID : str):
     payload = {
         "userID" : userID,
-        "expiry" : time.time() + 600
+        "expiry" : time.time() + 2
     }
     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
     return token_response(token)
