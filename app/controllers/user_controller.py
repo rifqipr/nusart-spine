@@ -17,25 +17,25 @@ async def get_users(skip : int = 0, limit = 100, db : Session = Depends(get_db))
     response = {
         "error" : False,
         "error_message" : "",
-        "data" : users
+        "data" : [users]
     }
     return response
 
-# Get user by id
-@router.get("/{id}", tags=["user"])
+# Get user by email
+@router.get("/{email}", tags=["user"])
 async def get_user(email : str, db : Session = Depends(get_db)):
     user = crud.get_user_by_email(db, email=email)
     if user:
         response = {
             "error" : False,
             "error_message" : "",
-            "data" : user
+            "data" : [user]
         }
     else:
         response = {
             "error" : True,
             "error_message" : "User does not exist",
-            "data" : {}
+            "data" : []
         }
     return response
 
@@ -47,14 +47,14 @@ async def create_user(new_user : UserCreate, db : Session = Depends(get_db)):
         response = {
             "error" : False,
             "error_message" : "Email already registered",
-            "data" : {}
+            "data" : []
         }
     else:
         user = crud.create_user(db, user=new_user)
         response = {
             "error" : False,
             "error_message" : "",
-            "data" : user
+            "data" : [user]
         }
     return response
 
@@ -66,7 +66,7 @@ async def user_login(user : UserCreate, db : Session = Depends(get_db)):
     response = {
         "error" : True,
         "error_message" : "",
-        "data" : {}
+        "data" : []
     }
 
     if db_user:

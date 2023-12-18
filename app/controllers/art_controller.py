@@ -59,7 +59,7 @@ async def upload_art_pred(file : UploadFile = File(...)):
         response = {
             "error" : False,
             "error_message" : "Invalid Document Type",
-            "data" : {}
+            "data" : []
         }
     
     else:
@@ -67,6 +67,6 @@ async def upload_art_pred(file : UploadFile = File(...)):
         response = {
             "error" : False,
             "error_message" : "",
-            "data" : new_img
+            "data" : [new_img]
         }
     return response
