@@ -4,8 +4,8 @@ from app.services.database import init_db
 
 app = FastAPI()
 
+
 init_db()
 
 app.include_router(art_controller.router)
 app.include_router(user_controller.router)
-
