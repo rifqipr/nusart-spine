@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, File, HTTPException
+from fastapi import APIRouter, Depends, File
 from fastapi.datastructures import UploadFile
 from keras.models import load_model
 from keras.preprocessing import image
@@ -128,7 +128,7 @@ async def predict(file: UploadFile = File(...)):
         os.remove(image_path)
 
     except Exception as e:
-        response["error_message"] = e.__context__
+        response["error_message"] = str(e)
         return response
 
     return response
