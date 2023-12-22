@@ -51,22 +51,22 @@ async def upload_art(data : CreateArt, db : Session = Depends(get_db)):
     return response
 
 # Post Art (Predict)
-# @router.post("/pred", dependencies=[Depends(JWTBearer())], tags=["art"])
-# async def upload_art_pred(file : UploadFile = File(...)):
-#     allowed_extensions = {'jpg', 'jpeg', 'png'}
-#     file_extension = os.path.splitext(file.filename)[1].lower()[1:]
-#     if file_extension not in allowed_extensions:
-#         response = {
-#             "error" : False,
-#             "error_message" : "Invalid Document Type",
-#             "data" : []
-#         }
+@router.post("/arts/pred", dependencies=[Depends(JWTBearer())], tags=["art"])
+async def upload_art_pred(file : UploadFile = File(...)):
+    allowed_extensions = {'jpg', 'jpeg', 'png'}
+    file_extension = os.path.splitext(file.filename)[1].lower()[1:]
+    if file_extension not in allowed_extensions:
+        response = {
+            "error" : False,
+            "error_message" : "Invalid Document Type",
+            "data" : []
+        }
     
-#     else:
-#         new_img = gcs.upload_pred(file)
-#         response = {
-#             "error" : False,
-#             "error_message" : "",
-#             "data" : [new_img]
-#         }
-#     return response
+    else:
+        new_img = gcs.upload_pred(file)
+        response = {
+            "error" : False,
+            "error_message" : "",
+            "data" : [new_img]
+        }
+    return response
